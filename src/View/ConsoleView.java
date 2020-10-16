@@ -15,42 +15,33 @@ public class ConsoleView implements IView {
 	Register register = new Register();
 
 	public void mainMenu(Model.RWFile rwFile) throws IOException {
-
 		register.readFile();
-		int menuChoice = 0;
-		while (menuChoice != 7) {
-			menuChoice = menu();
-			switch (menuChoice) {
-			case 1:
-				regMember();
-				break;
-			case 2:
-				regBoat();
+		int input = 0;
+		input = menu();
+		MenuOption menuOption1 = MenuOption.ADD_MEMBER;
+		if (menuOption1.getCode() == input)
+			regMember();
+		MenuOption menuOption2 = MenuOption.ADD_BOAT;
+		if (menuOption2.getCode() == input)
+			regBoat();
+		MenuOption menuOption3 = MenuOption.SHOW_INFO;
+		if (menuOption3.getCode() == input)
+			showInfo();
+		MenuOption menuOption4 = MenuOption.UPDATE_INFO;
+		if (menuOption4.getCode() == input)
+			updateInfo();
+		MenuOption menuOption5 = MenuOption.DELETE_INFO;
+		if (menuOption5.getCode() == input)
+			deleteInfo();
+		MenuOption menuOption6 = MenuOption.CLEAR_INFO;
+		if (menuOption6.getCode() == input)
+			register.clearData();
+		MenuOption menuOption7 = MenuOption.SAVE_INFO;
+		if (menuOption7.getCode() == input) {
+			register.save();
+			System.out.println(" Saving and Exiting...");
+			System.exit(0);
 
-				break;
-			case 3:
-				showInfo();
-
-				break;
-			case 4:
-				updateInfo();
-
-				break;
-			case 5:
-				deleteInfo();
-
-				break;
-			case 6:
-				System.out.println("....Data Cleared");
-				register.clearData();
-				break;
-			case 7:
-				System.out.println(" Saving and Exiting...");
-				register.save();
-				System.exit(0);
-
-				break;
-			}
 		}
 	}
 
