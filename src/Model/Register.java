@@ -9,10 +9,16 @@ public class Register {
 	private ArrayList<Member> memList = new ArrayList<Member>();
 	private RWFile rwFile = new RWFile();
 
-	public void readFile() throws IOException
-	{
-		memList=rwFile.textToList();
+	/*
+	 * To read the file from the text file and copy to list
+	 */
+	public void readFile() throws IOException {
+		memList = rwFile.textToList();
 	}
+
+	/*
+	 * Add the member details to memlist
+	 */
 	public void regMem(int uniqueID, String name, String persNum) {
 		this.memList.add(new Member(uniqueID, name, persNum));
 	}
@@ -20,11 +26,14 @@ public class Register {
 	public ArrayList<Member> getMemberList() {
 		return new ArrayList<Member>(memList);
 	}
-	
+
 	public void setMemberList(ArrayList<Member> memList) {
-		this.memList=memList;
+		this.memList = memList;
 	}
 
+	/*
+	 * to update the information of member
+	 */
 	public void updateMem(Member m, String name, String persNum) {
 		m.setName(name);
 		m.setPN(persNum);
@@ -34,6 +43,9 @@ public class Register {
 		this.memList.remove(m);
 	}
 
+	/*
+	 * finding the member using unique id and returning the member
+	 */
 	public Member findMem(int uniqueID) {
 		for (Member m : this.memList) {
 			if (m.getUID() == uniqueID)
@@ -41,11 +53,18 @@ public class Register {
 		}
 		return null;
 	}
-	public void save() throws IOException
-	{
+
+	/*
+	 * Save the details
+	 */
+	public void save() throws IOException {
 		rwFile.regMemberTxt(memList);
 		rwFile.regBoatTxt(memList);
 	}
+
+	/*
+	 * Clear data
+	 */
 	public void clearData() throws IOException {
 		FileWriter clearMem = new FileWriter("Members.txt", false);
 		FileWriter clearBoat = new FileWriter("Boats.txt", false);
@@ -57,6 +76,6 @@ public class Register {
 		clearBoat1.flush();
 		clearBoat1.close();
 		clearBoat.close();
-		memList.clear();		
+		memList.clear();
 	}
 }

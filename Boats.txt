@@ -1,0 +1,3 @@
+9671178;SailBoat;21.0
+9671178;MotorSailer;34.0
+9699498;SailBoat;23.0

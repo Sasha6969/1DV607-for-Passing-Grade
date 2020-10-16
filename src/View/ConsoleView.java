@@ -48,8 +48,6 @@ public class ConsoleView implements IView {
 	}
 
 	public int menu() {
-
-		Scanner sc = new Scanner(System.in);
 		int menuChoice = 0;
 		while (true) {
 			try {
@@ -75,60 +73,65 @@ public class ConsoleView implements IView {
 		}
 	}
 
+	/*
+	 * To Register the Member
+	 */
 	public void regMember() throws IOException {
 		int uniqueId = (int) (System.currentTimeMillis() & 0xffffff);// generate unique id
 		register.regMem(uniqueId, userEntersName(), userEntersPersNum());
 		System.out.println("Your Unique ID (UID): " + uniqueId);
 		System.out.println("Member Registered Successfully");
 	}
+	/*
+	 * To Register the Boats
+	 */
 
+	public void regBoat() throws IOException {// Registering boats
+		System.out.println("\n\t--Register a Boat--");
+		int id = userEntersUniqueId();
+		if (register.findMem(id) != null) {// Checking it with UID in the member list
+			Member t = register.findMem(id);
+			System.out.print("How Many Boats Would Like to Register: ");
+			int boats = sc.nextInt();
+			if (boats > 0) {// To check if the number of boats is greater that 0
+				addBoats(boats, t);
+			} else {
+				System.out.println("Error, You have to register at least 1 boat");
+				System.out.print("How Many Boats Would Like to Register: ");
+				boats = sc.nextInt();
+				addBoats(boats, t);
+			}
+		}
+	}
 
-public void regBoat() throws IOException {// Registering boats
-        System.out.println("\n\t--Register a Boat--");
-        int id = userEntersUniqueId();
-        if (register.findMem(id) != null) {// Checking it with UID in the member list
-            Member t = register.findMem(id);
-            System.out.print("How Many Boats Would Like to Register: ");
-            int boats = sc.nextInt();
-            if(boats>0) {
-                addBoats(boats, t);
-            }else {
-                System.out.println("Error, You have to register at least 1 boat");
-                System.out.print("How Many Boats Would Like to Register: ");
-                boats = sc.nextInt();
-                addBoats(boats, t);
-            }
-        }
-    }
+	public void addBoats(int boats, Member t) {
 
-    public void addBoats(int boats, Member t) {
+		for (int j = 0; j < boats; j++) {
+			System.out.print("\nChoose a Boat Type (1-4): ");
+			System.out.println("\n1. Sailboat" + "\n2. Motorsailer" + "\n3. Kayak" + "\n4. Other");
+			System.out.print("Enter Number: ");
+			int type = sc.nextInt();
+			System.out.print("Enter Boat Length in Meters: ");
+			double length = sc.nextDouble();
+			if (type == 1) {
 
-        for (int j = 0; j < boats; j++) {
-            System.out.print("\nChoose a Boat Type (1-4): ");
-            System.out.println("\n1. Sailboat" + "\n2. Motorsailer" + "\n3. Kayak" + "\n4. Other");
-            System.out.print("Enter Number: ");
-            int type = sc.nextInt();
-            System.out.print("Enter Boat Length in Meters: ");
-            double length = sc.nextDouble();
-            if (type == 1) {
+				t.registerBoat(length, "SailBoat");
+			}
+			if (type == 2) {
+				t.registerBoat(length, "MotorSailer");
+			}
+			if (type == 3) {
+				t.registerBoat(length, "Kayak");
 
-                t.registerBoat(length, "SailBoat");
-            }
-            if (type == 2) {
-                t.registerBoat(length, "MotorSailer");
-            }
-            if (type == 3) {
-                t.registerBoat(length, "Kayak");
-
-            }
-            if (type == 4) {
-                t.registerBoat(length, "Other");
-            }
-        }
-    }
+			}
+			if (type == 4) {
+				t.registerBoat(length, "Other");
+			}
+		}
+	}
 
 	public void showInfo() throws NumberFormatException, IOException {
-		Scanner sc = new Scanner(System.in);
+
 		System.out.println();
 		System.out.println("\t--Show Information--\n");
 		System.out.println("Choose an option from below");
@@ -155,7 +158,7 @@ public void regBoat() throws IOException {// Registering boats
 		if (choice3 == 2) {
 			specMemInfo();
 		}
-		return;
+
 	}
 
 	public void printCompactList() {
@@ -198,7 +201,6 @@ public void regBoat() throws IOException {// Registering boats
 
 	public void deleteInfo() throws IOException {
 
-		Scanner sc = new Scanner(System.in);
 		System.out.println("\t--Delete Information--\n");
 		System.out.println("1. Delete Member");
 		System.out.println("2. Delete Boat");
@@ -210,6 +212,7 @@ public void regBoat() throws IOException {// Registering boats
 		if (di == 2) {
 			deleteBoat();
 		}
+
 		return;
 	}
 
@@ -243,7 +246,7 @@ public void regBoat() throws IOException {// Registering boats
 	}
 
 	public void updateInfo() throws IOException {
-		Scanner sc = new Scanner(System.in);
+
 		System.out.println();
 		System.out.println("\t--update Information--\n");
 		System.out.println("Choose an option from below");
@@ -258,6 +261,7 @@ public void regBoat() throws IOException {// Registering boats
 		if (info == 2) {
 			updateBoat();
 		}
+
 	}
 
 	public void updateMemInfo() throws IOException {
@@ -268,7 +272,7 @@ public void regBoat() throws IOException {// Registering boats
 	}
 
 	public void updateBoat() throws IOException {
-		Scanner sc = new Scanner(System.in);
+
 		System.out.print("What is your UID : ");
 		int id = sc.nextInt();
 		for (Member m : register.getMemberList()) {// Checking through the member
@@ -298,16 +302,16 @@ public void regBoat() throws IOException {// Registering boats
 
 	{
 		boolean error = true;
-		int id=0;
+		int id = 0;
 		do {
 			try {
-				System.out.println("What is your UID : ");
+				System.out.println("What is your UID : ");// Error handling to check if the number entered in valid
 				id = Integer.parseInt(br.readLine());
 				error = false;
 			} catch (NumberFormatException nfe) {
 				System.out.println("Invalid Number try Again");
 			}
-		}while (error);
+		} while (error);
 		return id;
 	}
 
@@ -318,7 +322,7 @@ public void regBoat() throws IOException {// Registering boats
 
 	}
 
-	public String userEntersPersNum() throws IOException {
+	public String userEntersPersNum() throws IOException {// Error handling to check if the number entered in valid
 		int intPNum = 0;
 		boolean error = true;
 		do {
@@ -329,7 +333,7 @@ public void regBoat() throws IOException {// Registering boats
 			} catch (NumberFormatException nfe) {
 				System.out.println("Invalid Number try Again:");
 			}
-		}while (error);
+		} while (error);
 		return Integer.toString(intPNum);
 	}
 
