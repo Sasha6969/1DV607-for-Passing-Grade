@@ -4,9 +4,9 @@ import java.io.IOException;
 
 public class UserController {
 
-    public void start(View.ConsoleView view) throws IOException {
+    public void startProgram(View.ConsoleView console, Model.RWFile rwFile) throws IOException {
         
-        
+    	console.mainMenu(rwFile);
         
     }
 
