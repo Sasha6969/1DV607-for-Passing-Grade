@@ -13,36 +13,37 @@ public class ConsoleView implements IView {
 	Scanner sc = new Scanner(System.in);
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	Register register = new Register();
-	public boolean exit = false;
 
 	public void mainMenu(Model.RWFile rwFile) throws IOException {
 		register.readFile();
 		int input = 0;
-		input = menu();
-		MenuOption menuOption1 = MenuOption.ADD_MEMBER;
-		if (menuOption1.getCode() == input)
-			regMember();
-		MenuOption menuOption2 = MenuOption.ADD_BOAT;
-		if (menuOption2.getCode() == input)
-			regBoat();
-		MenuOption menuOption3 = MenuOption.SHOW_INFO;
-		if (menuOption3.getCode() == input)
-			showInfo();
-		MenuOption menuOption4 = MenuOption.UPDATE_INFO;
-		if (menuOption4.getCode() == input)
-			updateInfo();
-		MenuOption menuOption5 = MenuOption.DELETE_INFO;
-		if (menuOption5.getCode() == input)
-			deleteInfo();
-		MenuOption menuOption6 = MenuOption.SAVE_INFO;
-		if (menuOption6.getCode() == input) {
-			register.save();
-			System.out.println(" Saving and Exiting...");
-			exit = true;
-			System.exit(0);
-			MenuOption menuOption0 = MenuOption.CLEAR_INFO;
-			if (menuOption0.getCode() == input)
+		while (input != 7) {
+			input = menu();
+			MenuOption menuOption1 = MenuOption.ADD_MEMBER;
+			if (menuOption1.getCode() == input)
+				regMember();
+			MenuOption menuOption2 = MenuOption.ADD_BOAT;
+			if (menuOption2.getCode() == input)
+				regBoat();
+			MenuOption menuOption3 = MenuOption.SHOW_INFO;
+			if (menuOption3.getCode() == input)
+				showInfo();
+			MenuOption menuOption4 = MenuOption.UPDATE_INFO;
+			if (menuOption4.getCode() == input)
+				updateInfo();
+			MenuOption menuOption5 = MenuOption.DELETE_INFO;
+			if (menuOption5.getCode() == input)
+				deleteInfo();
+			MenuOption menuOption6 = MenuOption.CLEAR_INFO;
+			if (menuOption6.getCode() == input)
 				register.clearData();
+			MenuOption menuOption7 = MenuOption.SAVE_INFO;
+			if (menuOption7.getCode() == input) {
+				register.save();
+				System.out.println(" Saving and Exiting...");
+				System.exit(0);
+
+			}
 		}
 	}
 
@@ -52,7 +53,7 @@ public class ConsoleView implements IView {
 		int menuChoice = 0;
 		while (true) {
 			try {
-				System.out.println("+-----------------------------------+");
+				System.out.println("|-----------------------------------|");
 				System.out.println("|      Welcome to the Yacht club    |");
 				System.out.println("|---------------MENU----------------|");
 				System.out.println("| Choose an option from below:      |");
@@ -61,9 +62,9 @@ public class ConsoleView implements IView {
 				System.out.println("| 3. Show Information               |");
 				System.out.println("| 4. Update Information	 	    |");
 				System.out.println("| 5. Delete Information	 	    |");
-				System.out.println("| 6. Save and Exit	      	    |");
-				System.out.println("| 0. *CLEAR ALL DATA*		    |");
-				System.out.println("+-----------------------------------+");
+				System.out.println("| 6. *CLEAR ALL DATA*	      	    |");
+				System.out.println("| 7. Save and Exit		    |");
+				System.out.println("|-----------------------------------|");
 				System.out.print("Enter a number: ");
 				menuChoice = sc.nextInt();
 			} catch (InputMismatchException ex) {
@@ -72,7 +73,6 @@ public class ConsoleView implements IView {
 			}
 			return menuChoice;
 		}
-
 	}
 
 	public void regMember() throws IOException {
@@ -82,41 +82,53 @@ public class ConsoleView implements IView {
 		System.out.println("Member Registered Successfully");
 	}
 
-	public void regBoat() throws IOException {// Registering boats
-		System.out.println("\n\t--Register a Boat--");
 
-		int id = userEntersUniqueId();
-		if (register.findMem(id) != null) {// Checking it with UID in the member list
-			Member t = register.findMem(id);
-			System.out.print("How Many Boats Would Like to Register: ");
-			int boats = sc.nextInt();
-			for (int j = 0; j < boats; j++) {
-				System.out.print("\nChoose a Boat Type (1-4): ");
-				System.out.println("\n1. Sailboat" + "\n2. Motorsailer" + "\n3. Kayak" + "\n4. Other");
-				System.out.print("Enter Number: ");
-				int type = sc.nextInt();
-				System.out.print("Enter Boat Length in Meters: ");
-				double length = sc.nextDouble();
-				if (type == 1) {
+public void regBoat() throws IOException {// Registering boats
+        System.out.println("\n\t--Register a Boat--");
+        int id = userEntersUniqueId();
+        if (register.findMem(id) != null) {// Checking it with UID in the member list
+            Member t = register.findMem(id);
+            System.out.print("How Many Boats Would Like to Register: ");
+            int boats = sc.nextInt();
+            if(boats>0) {
+                addBoats(boats, t);
+            }else {
+                System.out.println("Error, You have to register at least 1 boat");
+                System.out.print("How Many Boats Would Like to Register: ");
+                boats = sc.nextInt();
+                addBoats(boats, t);
+            }
+        }
+    }
 
-					t.registerBoat(length, "SailBoat");
-				}
-				if (type == 2) {
-					t.registerBoat(length, "MotorSailer");
-				}
-				if (type == 3) {
-					t.registerBoat(length, "Kayak");
+    public void addBoats(int boats, Member t) {
 
-				}
-				if (type == 4) {
-					t.registerBoat(length, "Other");
-				}
-			}
-		}
-	}
+        for (int j = 0; j < boats; j++) {
+            System.out.print("\nChoose a Boat Type (1-4): ");
+            System.out.println("\n1. Sailboat" + "\n2. Motorsailer" + "\n3. Kayak" + "\n4. Other");
+            System.out.print("Enter Number: ");
+            int type = sc.nextInt();
+            System.out.print("Enter Boat Length in Meters: ");
+            double length = sc.nextDouble();
+            if (type == 1) {
+
+                t.registerBoat(length, "SailBoat");
+            }
+            if (type == 2) {
+                t.registerBoat(length, "MotorSailer");
+            }
+            if (type == 3) {
+                t.registerBoat(length, "Kayak");
+
+            }
+            if (type == 4) {
+                t.registerBoat(length, "Other");
+            }
+        }
+    }
 
 	public void showInfo() throws NumberFormatException, IOException {
-		//		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.println();
 		System.out.println("\t--Show Information--\n");
 		System.out.println("Choose an option from below");
@@ -186,7 +198,7 @@ public class ConsoleView implements IView {
 
 	public void deleteInfo() throws IOException {
 
-		//		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.println("\t--Delete Information--\n");
 		System.out.println("1. Delete Member");
 		System.out.println("2. Delete Boat");
@@ -231,7 +243,7 @@ public class ConsoleView implements IView {
 	}
 
 	public void updateInfo() throws IOException {
-		//		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.println();
 		System.out.println("\t--update Information--\n");
 		System.out.println("Choose an option from below");
@@ -256,7 +268,7 @@ public class ConsoleView implements IView {
 	}
 
 	public void updateBoat() throws IOException {
-		//		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.print("What is your UID : ");
 		int id = sc.nextInt();
 		for (Member m : register.getMemberList()) {// Checking through the member
@@ -285,8 +297,17 @@ public class ConsoleView implements IView {
 	public int userEntersUniqueId() throws NumberFormatException, IOException
 
 	{
-		System.out.println("What is your UID : ");
-		int id = Integer.parseInt(br.readLine());
+		boolean error = true;
+		int id=0;
+		do {
+			try {
+				System.out.println("What is your UID : ");
+				id = Integer.parseInt(br.readLine());
+				error = false;
+			} catch (NumberFormatException nfe) {
+				System.out.println("Invalid Number try Again");
+			}
+		}while (error);
 		return id;
 	}
 
@@ -298,20 +319,18 @@ public class ConsoleView implements IView {
 	}
 
 	public String userEntersPersNum() throws IOException {
-		String pNum = "";
+		int intPNum = 0;
 		boolean error = true;
-		while(error) {
+		do {
 			try {
 				System.out.print("Enter the Personal Number (YYMMDDXXXX): ");
-				pNum = br.readLine();
-				int intPNum = Integer.parseInt(pNum);
+				intPNum = Integer.parseInt(br.readLine());
 				error = false;
-			}catch(NumberFormatException nfe) {
-				System.out.println("Invalid Number try Again");
-				pNum = br.readLine();
+			} catch (NumberFormatException nfe) {
+				System.out.println("Invalid Number try Again:");
 			}
-		}
-		return pNum;
+		}while (error);
+		return Integer.toString(intPNum);
 	}
 
 }
