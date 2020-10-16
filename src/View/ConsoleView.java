@@ -13,6 +13,7 @@ public class ConsoleView implements IView {
 	Scanner sc = new Scanner(System.in);
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	Register register = new Register();
+	public boolean exit = false;
 
 	public void mainMenu(Model.RWFile rwFile) throws IOException {
 		register.readFile();
@@ -33,15 +34,15 @@ public class ConsoleView implements IView {
 		MenuOption menuOption5 = MenuOption.DELETE_INFO;
 		if (menuOption5.getCode() == input)
 			deleteInfo();
-		MenuOption menuOption6 = MenuOption.CLEAR_INFO;
-		if (menuOption6.getCode() == input)
-			register.clearData();
-		MenuOption menuOption7 = MenuOption.SAVE_INFO;
-		if (menuOption7.getCode() == input) {
+		MenuOption menuOption6 = MenuOption.SAVE_INFO;
+		if (menuOption6.getCode() == input) {
 			register.save();
 			System.out.println(" Saving and Exiting...");
+			exit = true;
 			System.exit(0);
-
+			MenuOption menuOption0 = MenuOption.CLEAR_INFO;
+			if (menuOption0.getCode() == input)
+				register.clearData();
 		}
 	}
 
@@ -51,7 +52,7 @@ public class ConsoleView implements IView {
 		int menuChoice = 0;
 		while (true) {
 			try {
-				System.out.println("|-----------------------------------|");
+				System.out.println("+-----------------------------------+");
 				System.out.println("|      Welcome to the Yacht club    |");
 				System.out.println("|---------------MENU----------------|");
 				System.out.println("| Choose an option from below:      |");
@@ -60,9 +61,9 @@ public class ConsoleView implements IView {
 				System.out.println("| 3. Show Information               |");
 				System.out.println("| 4. Update Information	 	    |");
 				System.out.println("| 5. Delete Information	 	    |");
-				System.out.println("| 6. *CLEAR ALL DATA*	      	    |");
-				System.out.println("| 7. Save and Exit		    |");
-				System.out.println("|-----------------------------------|");
+				System.out.println("| 6. Save and Exit	      	    |");
+				System.out.println("| 0. *CLEAR ALL DATA*		    |");
+				System.out.println("+-----------------------------------+");
 				System.out.print("Enter a number: ");
 				menuChoice = sc.nextInt();
 			} catch (InputMismatchException ex) {
@@ -71,6 +72,7 @@ public class ConsoleView implements IView {
 			}
 			return menuChoice;
 		}
+
 	}
 
 	public void regMember() throws IOException {
@@ -114,7 +116,7 @@ public class ConsoleView implements IView {
 	}
 
 	public void showInfo() throws NumberFormatException, IOException {
-		Scanner sc = new Scanner(System.in);
+		//		Scanner sc = new Scanner(System.in);
 		System.out.println();
 		System.out.println("\t--Show Information--\n");
 		System.out.println("Choose an option from below");
@@ -184,7 +186,7 @@ public class ConsoleView implements IView {
 
 	public void deleteInfo() throws IOException {
 
-		Scanner sc = new Scanner(System.in);
+		//		Scanner sc = new Scanner(System.in);
 		System.out.println("\t--Delete Information--\n");
 		System.out.println("1. Delete Member");
 		System.out.println("2. Delete Boat");
@@ -229,7 +231,7 @@ public class ConsoleView implements IView {
 	}
 
 	public void updateInfo() throws IOException {
-		Scanner sc = new Scanner(System.in);
+		//		Scanner sc = new Scanner(System.in);
 		System.out.println();
 		System.out.println("\t--update Information--\n");
 		System.out.println("Choose an option from below");
@@ -254,7 +256,7 @@ public class ConsoleView implements IView {
 	}
 
 	public void updateBoat() throws IOException {
-		Scanner sc = new Scanner(System.in);
+		//		Scanner sc = new Scanner(System.in);
 		System.out.print("What is your UID : ");
 		int id = sc.nextInt();
 		for (Member m : register.getMemberList()) {// Checking through the member
@@ -296,10 +298,20 @@ public class ConsoleView implements IView {
 	}
 
 	public String userEntersPersNum() throws IOException {
-		System.out.print("Enter the Personal Number (YYMMDDXXXX): ");
-		String pNum = br.readLine();
+		String pNum = "";
+		boolean error = true;
+		while(error) {
+			try {
+				System.out.print("Enter the Personal Number (YYMMDDXXXX): ");
+				pNum = br.readLine();
+				int intPNum = Integer.parseInt(pNum);
+				error = false;
+			}catch(NumberFormatException nfe) {
+				System.out.println("Invalid Number try Again");
+				pNum = br.readLine();
+			}
+		}
 		return pNum;
-
 	}
 
 }

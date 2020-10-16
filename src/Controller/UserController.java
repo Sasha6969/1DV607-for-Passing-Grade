@@ -6,8 +6,9 @@ public class UserController {
 
     public void startProgram(View.ConsoleView console, Model.RWFile rwFile) throws IOException {
         
-    	console.mainMenu(rwFile);
-        
+    	while(!console.exit) {
+    		console.mainMenu(rwFile);
+        }
     }
 
 }
