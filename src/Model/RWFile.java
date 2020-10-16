@@ -84,22 +84,6 @@ public class RWFile {
 		}
 	}
 	
-	public void clearData(ArrayList<Member> memList) throws IOException {
-		Register reg = new Register();
-		FileWriter clearMem = new FileWriter("Members.txt", false);
-		FileWriter clearBoat = new FileWriter("Boats.txt", false);
-		PrintWriter clearMem1 = new PrintWriter(clearMem, false);
-		PrintWriter clearBoat1 = new PrintWriter(clearBoat, false);
-		clearMem1.flush();
-		clearMem1.close();
-		clearMem.close();
-		clearBoat1.flush();
-		clearBoat1.close();
-		clearBoat.close();
-		ArrayList <Member> mty= new ArrayList<Member>();
-		reg.setMemberList(mty);
-	}
-	
 	public ArrayList<Member> textToList() throws IOException {
 		
 		textFilesExists();

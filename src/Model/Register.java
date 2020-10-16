@@ -1,6 +1,8 @@
 package Model;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Register {
@@ -43,5 +45,18 @@ public class Register {
 	{
 		rwFile.regMemberTxt(memList);
 		rwFile.regBoatTxt(memList);
+	}
+	public void clearData() throws IOException {
+		FileWriter clearMem = new FileWriter("Members.txt", false);
+		FileWriter clearBoat = new FileWriter("Boats.txt", false);
+		PrintWriter clearMem1 = new PrintWriter(clearMem, false);
+		PrintWriter clearBoat1 = new PrintWriter(clearBoat, false);
+		clearMem1.flush();
+		clearMem1.close();
+		clearMem.close();
+		clearBoat1.flush();
+		clearBoat1.close();
+		clearBoat.close();
+		memList.clear();		
 	}
 }

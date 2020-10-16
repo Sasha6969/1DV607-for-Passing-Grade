@@ -42,7 +42,7 @@ public class ConsoleView implements IView {
 				break;
 			case 6:
 				System.out.println("....Data Cleared");
-				rwFile.clearData(register.getMemberList());
+				register.clearData();
 				break;
 			case 7:
 				System.out.println(" Saving and Exiting...");
@@ -54,7 +54,7 @@ public class ConsoleView implements IView {
 		}
 	}
 
-	public int menu() {//
+	public int menu() {
 
 		Scanner sc = new Scanner(System.in);
 		int menuChoice = 0;
