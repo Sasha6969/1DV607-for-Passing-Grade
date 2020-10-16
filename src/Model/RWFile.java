@@ -12,12 +12,12 @@ import java.util.Scanner;
 
 public class RWFile {
 	
-	protected ArrayList<Member> memList = new ArrayList<>();
+	//protected ArrayList<Member> memList = new ArrayList<>();
 	private File memFile = new File("Members.txt");
 	private File boatFile = new File("Boats.txt");
 	
 
-	public void regMemberTxt() throws IOException {// Adding the members to text file
+	public void regMemberTxt(ArrayList<Member> memList) throws IOException {// Adding the members to text file
 		if (!memFile.exists()) {
 			memFile.createNewFile();
 			try {
@@ -25,12 +25,10 @@ public class RWFile {
 				BufferedWriter output = new BufferedWriter(fileWriter);
 				for (Member m : memList) {
 					output.write(m.getUID() + ";" + m.getName() + ";" + m.getPN() + "\n");
-					System.out.println("Successfully wrote to the file.");
 
 				}
 				output.close();
 			} catch (IOException e) {
-				System.out.println("An error occurred.");
 				e.printStackTrace();
 			}
 		} else {
@@ -42,13 +40,12 @@ public class RWFile {
 				}
 				output.close();
 			} catch (IOException e) {
-				System.out.println("An error occurred.");
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public void regBoatTxt() throws IOException {// Adding boats to text
+	public void regBoatTxt(ArrayList<Member> memList) throws IOException {// Adding boats to text
 
 		if (!boatFile.exists()) {
 			boatFile.createNewFile();
@@ -65,7 +62,6 @@ public class RWFile {
 
 				output.close();
 			} catch (IOException e) {
-				System.out.println("An error occurred.");
 				e.printStackTrace();
 			}
 		} else {
@@ -82,14 +78,14 @@ public class RWFile {
 
 				output.close();
 			} catch (IOException e) {
-				System.out.println("An error occurred.");
 				e.printStackTrace();
 
 			}
 		}
 	}
 	
-	public void clearData() throws IOException {
+	public void clearData(ArrayList<Member> memList) throws IOException {
+		Register reg = new Register();
 		FileWriter clearMem = new FileWriter("Members.txt", false);
 		FileWriter clearBoat = new FileWriter("Boats.txt", false);
 		PrintWriter clearMem1 = new PrintWriter(clearMem, false);
@@ -100,15 +96,15 @@ public class RWFile {
 		clearBoat1.flush();
 		clearBoat1.close();
 		clearBoat.close();
-		memList.clear();
+		ArrayList <Member> mty= new ArrayList<Member>();
+		reg.setMemberList(mty);
 	}
 	
-	public void textToList() throws IOException {
+	public ArrayList<Member> textToList() throws IOException {
 		
 		textFilesExists();
-		
-		if (memList.size() == 0) {
-			try {
+		ArrayList<Member> memList=new ArrayList<Member>();
+
 				String line = "";
 				FileInputStream file = new FileInputStream("Members.txt");
 				Scanner scan = new Scanner(file);
@@ -131,13 +127,14 @@ public class RWFile {
 							m.registerBoat(Double.parseDouble(partBoat[2]), partBoat[1]);
 
 						}
-					}
+					}boatScan.close();
 				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
+				scan.close();
+				
+				return memList;
 			}
-		}
-	}
+		
+	
 	
 	public void textFilesExists() throws IOException {
 		

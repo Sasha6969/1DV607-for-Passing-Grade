@@ -3,22 +3,22 @@ package View;
 import java.io.IOException;
 
 public interface IView {
-	
+
 //Controller of the main menu with feature 
-	void mainMenu() throws IOException;
+	public void mainMenu(Model.RWFile rwFile) throws IOException;
 
 //printing of main menu with all features
 	int menu();
-	
+
 //displaying the registration of members
-	void regMember();
+	void regMember() throws IOException;
 
 //displaying the registration of boats
 	void regBoat() throws IOException;
 
 //displaying info for user to choose list or specific member info
-	void showInfo();
-	
+	void showInfo() throws NumberFormatException, IOException;
+
 //displays compact list
 	void printCompactList();
 
@@ -26,7 +26,7 @@ public interface IView {
 	void printVerboseList();
 
 //displays specific member's info
-	void specMemInfo();
+	void specMemInfo() throws NumberFormatException, IOException;
 
 //displaying deletion of member of boats
 	void deleteInfo() throws IOException;
@@ -45,5 +45,11 @@ public interface IView {
 
 //displays update boat info
 	void updateBoat() throws IOException;
-	
+//Take uniqueId from user
+	public int userEntersUniqueId() throws NumberFormatException, IOException;
+//Take Name from  user
+	public String userEntersName() throws IOException;
+//Take Personal Number from user
+	public String userEntersPersNum() throws IOException;
+
 }
